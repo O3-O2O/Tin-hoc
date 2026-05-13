@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>IT Career Quest - Chủ đề G</title>
+    <style>
+        :root {
+            --primary: #00f2fe;
+            --secondary: #4facfe;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #game-container {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.2);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        h1 { color: var(--primary); margin-bottom: 1rem; }
+
+        .question { font-size: 1.2rem; margin-bottom: 2rem; min-height: 60px; }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        button {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid var(--secondary);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        #score-board {
+            margin-top: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #334155;
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        #progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.5s;
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <div class="progress-bar"><div id="progress"></div></div>
+    <h1>IT QUEST 🚀</h1>
+    <div id="quiz">
+        <div class="question" id="question-text">Đang tải câu hỏi...</div>
+        <div class="options-grid" id="answer-buttons">
+            <!-- Buttons sẽ tự sinh ra ở đây -->
+        </div>
+    </div>
+    <div id="score-board">Điểm: <span id="score">0</span></div>
+</div>
+
+<script>
+    const questions = [
+        {
+            q: "Nhóm nghề nào chuyên tạo ra các dòng mã (code) để xây dựng phần mềm?",
+            a: ["Quản trị mạng", "Thiết kế & Lập trình", "Bảo trì máy tính", "Tư vấn CNTT"],
+            correct: 1
+        },
+        {
+            q: "Kỹ năng nào là quan trọng nhất đối với một Lập trình viên?",
+            a: ["Lắp ráp phần cứng", "Tư duy logic", "Sửa máy in", "Hàn mạch điện tử"],
+            correct: 1
+        },
+        {
+            q: "Ai là người chịu trách nhiệm đảm bảo hệ thống mạng hoạt động ổn định và an toàn?",
+            a: ["Web Designer", "Lập trình viên Game", "Quản trị hệ thống", "Nhà văn"],
+            correct: 2
+        }
+    ];
+
+    let currentIdx = 0;
+    let score = 0;
+
+    function loadQuestion() {
+        if (currentIdx >= questions.length) {
+            document.getElementById('quiz').innerHTML = `<h2>Chúc mừng! Bạn đã hoàn thành lộ trình hướng nghiệp!</h2>`;
+            return;
+        }
+
+        const qData = questions[currentIdx];
+        document.getElementById('question-text').innerText = qData.q;
+        const btnContainer = document.getElementById('answer-buttons');
+        btnContainer.innerHTML = '';
+        
+        qData.a.forEach((ans, i) => {
+            const btn = document.createElement('button');
+            btn.innerText = ans;
+            btn.onclick = () => checkAnswer(i);
+            btnContainer.appendChild(btn);
+        });
+
+        document.getElementById('progress').style.width = (currentIdx / questions.length) * 100 + "%";
+    }
+
+    function checkAnswer(idx) {
+        if (idx === questions[currentIdx].correct) {
+            score += 10;
+            alert("Chính xác! +10 điểm kinh nghiệm.");
+        } else {
+            alert("Sai rồi! Hãy xem lại kiến thức về nhóm nghề nhé.");
+        }
+        currentIdx++;
+        document.getElementById('score').innerText = score;
+        loadQuestion();
+    }
+
+    loadQuestion();
+</script>
+</body>
+</html>
